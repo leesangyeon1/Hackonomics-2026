@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'pages/loans_page.dart';
+import 'pages/investing_page.dart';
+import 'pages/spending_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E1), // warm cream background
+      backgroundColor: const Color(0xFFFFF8E1),
       appBar: AppBar(
         title: const Text('Finance Dashboard'),
         backgroundColor: const Color(0xFFFFB300),
@@ -88,19 +91,29 @@ class _MyHomePageState extends State<MyHomePage> {
                       'Pending': '1',
                       'Total Due': '\$560',
                     },
-                    onTap: () => _showMessage('Loans tapped!'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoansPage()),
+                      );
+                    },
                   ),
                   const SizedBox(height: 16),
                   DashboardCard(
                     title: 'Investing',
-                    color: const Color.fromARGB(255, 48, 231, 255)!,
+                    color: const Color.fromARGB(255, 48, 231, 255),
                     icon: Icons.bar_chart,
                     metrics: {
                       'Portfolio Value': '\$500',
                       'Today Gain': '\$12',
                       'YTD Return': '5%',
                     },
-                    onTap: () => _showMessage('Investing tapped!'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const InvestingPage()),
+                      );
+                    },
                   ),
                   const SizedBox(height: 16),
                   DashboardCard(
@@ -112,7 +125,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       'This Week': '\$210',
                       'This Month': '\$675',
                     },
-                    onTap: () => _showMessage('Spending tapped!'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const SpendingPage()),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -121,10 +139,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
-  }
-
-  void _showMessage(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 }
 

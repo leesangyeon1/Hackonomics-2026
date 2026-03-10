@@ -6,10 +6,10 @@ class SpendingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E1),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: const Text('Spending'),
-        backgroundColor: const Color(0xFFFFB300),
+        backgroundColor: const Color.fromARGB(255, 105, 240, 174),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

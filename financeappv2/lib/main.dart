@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Finance Hackathon App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFFC107)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 255, 166)),
         useMaterial3: true,
       ),
       home: const MyHomePage(),
@@ -37,10 +37,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E1),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: const Text('Finance Dashboard'),
-        backgroundColor: const Color(0xFFFFB300),
+        backgroundColor: const Color.fromARGB(85, 255, 255, 255),
         elevation: 0,
       ),
       body: Padding(
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               decoration: BoxDecoration(
-                color: Colors.amber[300],
+                color: const Color.fromARGB(255, 255, 255, 255),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Color.fromARGB(255, 47, 255, 179),
                     ),
                   ),
                 ],
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(height: 16),
                   DashboardCard(
                     title: 'Spending',
-                    color: Colors.greenAccent,
+                    color: const Color.fromARGB(255, 105, 240, 174),
                     icon: Icons.attach_money,
                     metrics: {
                       'Today': '\$45',

@@ -1,13 +1,17 @@
 # Hackonomics-2026
 
-This repository contains the Hackonomics project codebase with separate app folders.
+React frontend for Hackonomics, built with Vite.
 
-## Project folders
+## Project folder
 
-- `finance-web/` - Primary React + Vite web app (current frontend).
-- `financeappv2/` - Flutter app version.
+- `finance-web/` - React + Vite application source code.
 
-## Run the React app (`finance-web`)
+## Requirements
+
+- Node.js `20.19+` or `22.12+`
+- npm `10+`
+
+## Install and run locally
 
 ```bash
 cd finance-web
@@ -15,18 +19,14 @@ npm install
 npm run dev
 ```
 
-## Build the React app (`finance-web`)
+Vite starts a local development server (usually `http://localhost:5173`) with hot module replacement.
+
+## Available scripts
 
 ```bash
 cd finance-web
-npm run build
-npm run preview
-```
-
-## Run the Flutter app (`financeappv2`)
-
-```bash
-cd financeappv2
-flutter pub get
-flutter run
+npm run dev      # start local dev server
+npm run lint     # run ESLint
+npm run build    # create production build in dist/
+npm run preview  # preview production build locally
 ```

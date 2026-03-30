@@ -1,0 +1,127 @@
+.bento-section {
+  position: relative;
+  user-select: none;
+}
+
+.card-grid {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.magic-bento-card {
+  position: relative;
+  min-height: 180px;
+  border-radius: 16px;
+  padding: 1rem;
+  border: 1px solid #392e4e;
+  background: linear-gradient(180deg, rgba(8, 22, 43, 0.92) 0%, rgba(3, 15, 30, 0.92) 100%);
+  color: #fff;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-intensity: 0;
+}
+
+.magic-bento-card:hover {
+  transform: translateY(-2px);
+}
+
+.magic-bento-card__content {
+  position: relative;
+  z-index: 2;
+}
+
+.magic-bento-card__content {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.magic-bento-card__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #e3eeff;
+}
+
+.magic-metric-row {
+  display: block;
+}
+
+.magic-metric-line {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.magic-metric-label {
+  color: #d8ebff;
+}
+
+.magic-metric-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.magic-bento-card--border-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    220px circle at var(--glow-x) var(--glow-y),
+    rgba(var(--glow-color, 87, 166, 240), calc(var(--glow-intensity) * 0.55)) 0%,
+    rgba(var(--glow-color, 87, 166, 240), calc(var(--glow-intensity) * 0.18)) 40%,
+    transparent 72%
+  );
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: 0 0 8px rgba(87, 166, 240, 0.6);
+}
+
+.magic-ripple {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(circle, rgba(var(--ripple-color), 0.45) 0%, transparent 70%);
+}
+
+.global-spotlight {
+  position: fixed;
+  width: calc(var(--spotlight-radius, 400px) * 2);
+  height: calc(var(--spotlight-radius, 400px) * 2);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 120;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle,
+    rgba(var(--spotlight-color, 87, 166, 240), 0.16) 0%,
+    rgba(var(--spotlight-color, 87, 166, 240), 0.08) 35%,
+    transparent 68%
+  );
+}
+
+@media (max-width: 700px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

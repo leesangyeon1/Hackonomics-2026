@@ -1,0 +1,16 @@
+.shiny-text {
+  display: inline-block;
+  background-position: 150% center;
+  animation-name: shiny-sweep;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shiny-sweep {
+  0% {
+    background-position: 150% center;
+  }
+  100% {
+    background-position: -50% center;
+  }
+}

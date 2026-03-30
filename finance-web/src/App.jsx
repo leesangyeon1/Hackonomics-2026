@@ -430,58 +430,125 @@ function LoansPage({ onBack, loans, setLoans }) {
 
 function SpendingPage({ onBack, spendingData, setSpendingData }) {
   const income = Number(spendingData.income || 0)
-  const spend = Number(spendingData.spend || 0)
-  const netIncome = income - spend
+  const categories = spendingData.categories || []
+
+  const totalSpend = categories.reduce(
+    (sum, c) => sum + Number(c.amount || 0),
+    0
+  )
+
+  const budget = Number(spendingData.budget || 0)
+
+  const netIncome = income - totalSpend
+  const savingsRate = income > 0 ? (netIncome / income) * 100 : 0
+  const spendRatio = income > 0 ? (totalSpend / income) * 100 : 0
+  const remaining = budget - totalSpend
+
+  function updateCategory(index, value) {
+    const updated = [...categories]
+    updated[index].amount = value
+    setSpendingData((prev) => ({
+      ...prev,
+      categories: updated,
+    }))
+  }
+
+  function updateCategoryName(index, name) {
+    const updated = [...categories]
+    updated[index].name = name
+    setSpendingData((prev) => ({
+      ...prev,
+      categories: updated,
+    }))
+  }
+
+  function addCategory() {
+    setSpendingData((prev) => ({
+      ...prev,
+      categories: [...categories, { name: "", amount: "" }],
+    }))
+  }
+
+  function deleteCategory(index) {
+    const updated = categories.filter((_, i) => i !== index)
+    setSpendingData((prev) => ({
+      ...prev,
+      categories: updated,
+    }))
+  }
+
+  function getInsight() {
+    if (income === 0) return "Add income to begin tracking"
+    if (totalSpend > income) return "⚠️ You're losing money each month"
+    if (spendRatio > 80) return "⚠️ High spending ratio"
+    if (spendRatio < 50) return "✅ Great savings rate"
+    return "👍 You're doing okay"
+  }
 
   return (
     <section>
       <button className="back-button ghost-btn" onClick={onBack}>
         ← Back
       </button>
+
       <h2 className="page-title">Cash Flow</h2>
+
       <div className="spending-grid">
+        
+        {/* NET INCOME */}
         <div className="glass-card spending-big">
           <div className="panel-head">
             <strong>Net Income</strong>
-            <span>VIEW MORE ↗</span>
           </div>
+
           <div className="money">{formatMoney(netIncome.toFixed(2))}</div>
           <div className="muted">Income - Spend</div>
-        </div>
-        <div className="glass-card panel">
-          <div className="panel-head">
-            <strong>Spend</strong>
-            <span>VIEW MORE ↗</span>
+
+          {/* Progress Bar */}
+          <div style={{ marginTop: 12 }}>
+            <div className="muted">{spendRatio.toFixed(1)}% spent</div>
+            <div
+              style={{
+                height: 8,
+                borderRadius: 6,
+                background: "rgba(255,255,255,0.1)",
+                overflow: "hidden",
+                marginTop: 6,
+              }}
+            >
+              <div
+                style={{
+                  width: `${Math.min(spendRatio, 100)}%`,
+                  height: "100%",
+                  background:
+                    spendRatio > 80
+                      ? "#ef4444"
+                      : spendRatio > 50
+                      ? "#f59e0b"
+                      : "#22c55e",
+                }}
+              />
+            </div>
           </div>
-          <div className="money">{formatMoney(spend.toFixed(2))}</div>
-          <div className="muted">Input spend amount</div>
-          <input
-            className="panel-input"
-            value={spendingData.spend}
-            placeholder="Spend"
-            onChange={(e) =>
-              setSpendingData((prev) => ({
-                ...prev,
-                spend: e.target.value,
-              }))
-            }
-          />
-          <div className="row">
-            <span>Current</span>
-            <strong>{formatMoney(spend.toFixed(2))}</strong>
+
+          <div className="muted" style={{ marginTop: 10 }}>
+            {getInsight()}
           </div>
         </div>
+
+        {/* INCOME */}
         <div className="glass-card panel">
           <div className="panel-head">
             <strong>Income</strong>
-            <span>VIEW MORE ↗</span>
           </div>
+
           <div className="money">{formatMoney(income.toFixed(2))}</div>
-          <div className="muted">Input income amount</div>
+
           <input
             className="panel-input"
-            value={spendingData.income}
+            type="number"
             placeholder="Income"
+            value={spendingData.income}
             onChange={(e) =>
               setSpendingData((prev) => ({
                 ...prev,
@@ -489,16 +556,88 @@ function SpendingPage({ onBack, spendingData, setSpendingData }) {
               }))
             }
           />
+
           <div className="row">
-            <span>Net</span>
-            <strong>{formatMoney(netIncome.toFixed(2))}</strong>
+            <span>Savings Rate</span>
+            <strong>{savingsRate.toFixed(1)}%</strong>
           </div>
         </div>
+
+        {/* BUDGET */}
+        <div className="glass-card panel">
+          <div className="panel-head">
+            <strong>Budget</strong>
+          </div>
+
+          <div className="money">{formatMoney(budget.toFixed(2))}</div>
+
+          <input
+            className="panel-input"
+            type="number"
+            placeholder="Monthly Budget"
+            value={spendingData.budget || ""}
+            onChange={(e) =>
+              setSpendingData((prev) => ({
+                ...prev,
+                budget: e.target.value,
+              }))
+            }
+          />
+
+          <div className="row">
+            <span>Remaining</span>
+            <strong style={{ color: remaining < 0 ? "#ff6b6b" : "#59f69c" }}>
+              {formatMoney(remaining.toFixed(2))}
+            </strong>
+          </div>
+        </div>
+
+        {/* CATEGORIES */}
+        <div className="glass-card spending-big">
+          <div className="panel-head">
+            <strong>Spending Breakdown</strong>
+          </div>
+
+          {categories.map((c, i) => (
+            <div className="category-row" key={i}>
+              <input
+                className="category-name"
+                value={c.name}
+                onChange={(e) => updateCategoryName(i, e.target.value)}
+                placeholder="Category"
+              />
+
+              <input
+                className="category-amount"
+                type="number"
+                value={c.amount}
+                onChange={(e) => updateCategory(i, e.target.value)}
+                placeholder="$0"
+              />
+
+              <button
+                className="delete-btn"
+                onClick={() => deleteCategory(i)}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+
+          <button className="add-category-btn" onClick={addCategory}>
+            + Add Category
+          </button>
+
+          <div className="row" style={{ marginTop: 12 }}>
+            <span>Total Spend</span>
+            <strong>{formatMoney(totalSpend.toFixed(2))}</strong>
+          </div>
+        </div>
+
       </div>
     </section>
   )
 }
-
 function InvestingPage({ onBack, investingData, setInvestingData }) {
   return (
     <section>
